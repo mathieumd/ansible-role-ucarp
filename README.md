@@ -33,9 +33,9 @@ License
 
 GPLv3
 
-Author Information
-------------------
+Similar Roles
+-------------
 
-Inspired by
+This role was inspired by
 [eNiXHosting.ansible-ucarp](https://github.com/eNiXHosting/ansible-ucarp) by
 Laurent Corbes <laurent.corbes@enix.fr>.
