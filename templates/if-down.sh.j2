@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ "$IFACE" = "{{item.interface}}" ]; then
+  start-stop-daemon --stop --remove-pidfile \
+    --pidfile "/var/run/ucarp_${IFACE}_{{item.vhid}}.pid"
+fi

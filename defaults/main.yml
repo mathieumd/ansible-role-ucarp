@@ -1,0 +1,52 @@
+---
+# Ucarp manpage:
+# http://manpages.ubuntu.com/manpages/xenial/en/man8/ucarp.8.html
+
+ucarp_interface_config_file: /etc/network/interfaces
+ucarp_interface_config_dir:  /etc/network/interfaces.d
+
+ucarp_scripts_dir: /usr/share/ucarp
+# --upscript / -u
+ucarp_script_up: vip-multi-up
+# --downscript / -d
+ucarp_script_down: vip-multi-down
+
+ucarp_defaults:
+  # --advbase / -b
+  advbase: 1
+  # --advskew / -k
+  advskew: 0
+  # --preempt / -P
+  preempt: no
+  # --neutral / -n
+  neutral: no
+  # --deadratio / -r
+  deadratio:
+  # --facility / -f
+  facility:
+  # --ignoreifstate / -S
+  ignoreifstate: no
+  # --nomcast / -M
+  nomcast: no
+
+# VHID values: 1-255
+ucarp_addresses: []
+# ucarp_addresses:
+#     # --addr / -a
+#   - addr: 192.0.2.123
+#     # --vhid / -v
+#     vhid: 123
+#     # --interface / -i
+#     interface: eth0
+#     # --pass / -p
+#     pass: Pr1V4t3,sEC
+#     # --srcip / -s
+#     # Default: "$IF_ADDRESS"
+#     # srcip: 192.0.2.100
+#     # Default: "255.255.255.255"
+#     # netmask: 255.255.255.0
+#     # Default: (empty)
+#     # up: /opt/restart_haproxy.sh
+#     # Default: (empty)
+#     # down: /opt/restart_haproxy.sh
+

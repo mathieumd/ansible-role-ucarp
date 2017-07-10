@@ -1,0 +1,71 @@
+---
+
+- name: Stop here if interface doesn't exists
+  fail:
+    msg: "The interface {{item.interface}} doesn't exists on this machine."
+  with_items: "{{ucarp_addresses}}"
+  when: item.interface not in ansible_interfaces
+
+- name: Stop here if source IP address doesn't exists
+  fail:
+    msg: "The IP address {{item.srcip}} doesn't exists on this machine."
+  with_items: "{{ucarp_addresses}}"
+  when: item.srcip is defined and
+        item.srcip not in ansible_all_ipv4_addresses and
+        item.srcip not in ansible_all_ipv6_addresses
+
+- name: Make sure network uses interfaces.d
+  lineinfile:
+    dest: "{{ucarp_interface_config_file}}"
+    regexp: '^source\s+{{ucarp_interface_config_dir}}'
+    line: "source {{ucarp_interface_config_dir}}/*"
+    state: present
+    backup: yes
+  notify: Restart networking
+
+- name: Install Ucarp
+  apt:
+    name: ucarp
+    state: present
+
+- name: Copy Ucarp vip-up/vip-down scripts
+  copy:
+    src: "{{item}}"
+    dest: "{{ucarp_scripts_dir}}/{{item}}"
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - "{{ucarp_script_up}}"
+    - "{{ucarp_script_down}}"
+
+- name: Create the if-up script
+  template:
+    src: if-up.sh.j2
+    dest: "/etc/network/if-up.d/ucarp_{{item.vhid}}"
+    mode: 0755
+    owner: root
+    group: root
+  with_items: "{{ucarp_addresses}}"
+  notify: Restart networking
+
+- name: Create the if-down script
+  template:
+    src: if-down.sh.j2
+    dest: "/etc/network/if-down.d/ucarp_{{item.vhid}}"
+    mode: 0755
+    owner: root
+    group: root
+  with_items: "{{ucarp_addresses}}"
+  notify: Restart networking
+
+- name: Create Ucarp VIP interfaces
+  template:
+    src: interfaces.j2
+    dest: "{{ucarp_interface_config_dir}}/{{item.interface}}:ucarp_{{item.vhid}}"
+    mode: 0444
+    owner: root
+    group: root
+  with_items: "{{ucarp_addresses}}"
+  notify: Restart networking
+

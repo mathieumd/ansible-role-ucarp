@@ -1,0 +1,10 @@
+# Ucarp VIP interface (VHID {{item.vhid}})
+iface {{item.interface}}:ucarp_{{item.vhid}} inet static
+    address {{item.addr|mandatory|ipaddr}}
+    netmask {{item.netmask|default('255.255.255.255')}}
+    {% if item.up is defined %}
+    up {{item.up}}
+    {% endif %}
+    {% if item.down is defined %}
+    down {{item.down}}
+    {% endif %}

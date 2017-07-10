@@ -1,0 +1,24 @@
+galaxy_info:
+  author: Mathieu MD
+  description: Install and configure Ucarp for Debian.
+  license: GPLv3
+
+  min_ansible_version: 1.9
+
+  platforms:
+  - name: Debian
+    versions:
+  #  - all
+  #  - etch
+    - jessie
+  #  - lenny
+  #  - sid
+  #  - squeeze
+    - stretch
+  #  - wheezy
+
+  galaxy_tags:
+    - network
+    - server
+    - ucarp
+

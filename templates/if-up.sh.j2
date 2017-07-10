@@ -1,0 +1,30 @@
+#!/bin/sh
+if [ "$IFACE" = "{{item.interface}}" ]; then
+start-stop-daemon --start --background --make-pidfile \
+  --pidfile "/var/run/ucarp_${IFACE}_{{item.vhid}}.pid" \
+  --exec /usr/sbin/ucarp -- \
+    --interface $IFACE --shutdown \
+    --srcip {% if item.srcip is defined %}{{item.srcip}}{% else %}$IF_ADDRESS{% endif %} \
+    --vhid {{item.vhid}} --addr {{item.addr}} --pass {{item.pass}} \
+    --advbase {% if item.advbase is defined %}{{item.advbase}}{% else %}{{ucarp_defaults.advbase}}{% endif %} \
+    --advskew {% if item.advskew is defined %}{{item.advskew}}{% else %}{{ucarp_defaults.advskew}}{% endif %} \
+    --xparam {{item.vhid}} \
+    --upscript {{ucarp_scripts_dir}}/{{ucarp_script_up}} \
+    --downscript {{ucarp_scripts_dir}}/{{ucarp_script_down}}
+    {%- if
+      item.preempt is defined or
+      item.neutral is defined or
+      item.nomcast is defined or
+      item.ignoreifstate is defined or
+      item.deadratio is defined or
+      item.facility is defined
+    %} \
+    {% endif %}
+    {%- if item.preempt is defined and item.preempt %}--preempt {% endif %}
+    {%- if item.neutral is defined and item.neutral %}--neutral {% endif %}
+    {%- if item.nomcast is defined and item.nomcast %}--nomcast {% endif %}
+    {%- if item.ignoreifstate is defined and item.ignoreifstate %}--ignoreifstate {% endif %}
+    {%- if item.deadratio is defined %}--deadratio {{item.deadratio}} {% endif %}
+    {%- if item.facility is defined %}--facility {{item.facility}} {% endif %}
+
+fi
