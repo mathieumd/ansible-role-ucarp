@@ -10,7 +10,7 @@ NIC, use the simpler
 Role Variables
 --------------
 
-See [defaults/main.yml](defaults/main.yaml).
+See [defaults/main.yml](defaults/main.yml).
 
 Usage
 -----
