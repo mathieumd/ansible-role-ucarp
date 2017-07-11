@@ -1,3 +1,5 @@
 #!/bin/sh
-exec 2>/dev/null
-/sbin/ifdown "$1:ucarp_$3"
+IFACE="$1:ucarp_$3"
+/sbin/ifdown "$IFACE" \
+    || ( logger "Warning: Ucarp needs to force ifdown $IFACE." \
+        && /sbin/ifdown --force "$IFACE" )

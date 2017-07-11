@@ -1,3 +1,4 @@
 #!/bin/sh
-exec 2>/dev/null
-/sbin/ifup "$1:ucarp_$3"
+IFACE="$1:ucarp_$3"
+/sbin/ifup "$IFACE" \
+    || logger "Error: Ucarp failed to ifup $IFACE."
